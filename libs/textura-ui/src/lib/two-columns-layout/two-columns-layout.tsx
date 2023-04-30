@@ -1,13 +1,13 @@
 import React, {useCallback, useRef, useState} from 'react';
 import './two-columns-layout.scss';
-import {Panel} from "@textura/textura-ui";
+import {Panel} from "../panel/panel";
 
 type IProps = {
   left: React.ReactNode;
   right: React.ReactNode;
 }
 
-const TwoColumnsLayout: React.FC<IProps> = ({left, right}) => {
+export const TwoColumnsLayout: React.FC<IProps> = ({left, right}) => {
   const [isResizing, setIsResizing] = useState(false);
   const leftColumnRef = useRef<HTMLDivElement>(null);
 
@@ -33,9 +33,11 @@ const TwoColumnsLayout: React.FC<IProps> = ({left, right}) => {
         return;
       }
 
-      leftColumnRef.current.style.minWidth = `${e.clientX}px`;
-      leftColumnRef.current.style.maxWidth = `${e.clientX}px`;
-      leftColumnRef.current.style.width = `${e.clientX}px`;
+      const newWidth = e.clientX - 3;
+
+      leftColumnRef.current.style.minWidth = `${newWidth}px`;
+      leftColumnRef.current.style.maxWidth = `${newWidth}px`;
+      leftColumnRef.current.style.width = `${newWidth}px`;
     },
     [isResizing]
   );
@@ -68,5 +70,3 @@ const TwoColumnsLayout: React.FC<IProps> = ({left, right}) => {
     </Panel>
   );
 };
-
-export default TwoColumnsLayout;

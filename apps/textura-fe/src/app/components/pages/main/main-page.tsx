@@ -2,8 +2,7 @@ import React, {FC} from 'react';
 import './main-page.scss';
 import {Viewer} from "./viewer/viewer";
 import {Editor} from "./editor/editor";
-import {Button, Panel} from "@textura/textura-ui";
-import TwoColumnsLayout from "../../ui/two-columns-layout";
+import {Button, Panel, TwoColumnsLayout} from "@textura/textura-ui";
 
 export const MainPage: FC = () => {
   return (
