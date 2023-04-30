@@ -28,9 +28,9 @@ export const Editor: React.FC<IProps> = () => {
 
     const canvasWidth = canvasRef.current.clientWidth;
     const canvasHeight = canvasRef.current.clientHeight;
-    canvasRef.current.width = canvasWidth * 2;
-    canvasRef.current.height = canvasHeight * 2;
-    ctx.scale(2, 2);
+    canvasRef.current.width = canvasWidth;
+    canvasRef.current.height = canvasHeight;
+    ctx.scale(20, 20);
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
@@ -42,8 +42,8 @@ export const Editor: React.FC<IProps> = () => {
       image,
       offset.x,
       offset.y,
-      image.width * scale,
-      image.height * scale
+      image.width,
+      image.height
     );
   }, [image, scale, offset]);
 
