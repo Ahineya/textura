@@ -1,0 +1,20 @@
+.button {
+  background-color: var(--color-control);
+  transition: all var(--transition-hover);
+  font-size: var(--font-size-default);
+
+  user-select: none;
+
+  &:hover {
+    background-color: var(--color-control-hover);
+  }
+
+  &:active {
+    background-color: var(--color-control-active);
+  }
+
+  &.button-padded {
+    padding: 0 12px;
+    height: 32px;
+  }
+}

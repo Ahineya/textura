@@ -1,0 +1,8 @@
+.panel {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+
+  font-size: var(--font-size-default);
+  color: var(--color-text);
+}

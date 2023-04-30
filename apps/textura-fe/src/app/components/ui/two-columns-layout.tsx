@@ -1,12 +1,13 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import './two-columns-layout.scss';
+import {Panel} from "@textura/textura-ui";
 
 type IProps = {
   left: React.ReactNode;
   right: React.ReactNode;
 }
 
-const TwoColumnsLayout: React.FC<IProps> = ({ left, right }) => {
+const TwoColumnsLayout: React.FC<IProps> = ({left, right}) => {
   const [isResizing, setIsResizing] = useState(false);
   const leftColumnRef = useRef<HTMLDivElement>(null);
 
@@ -52,13 +53,19 @@ const TwoColumnsLayout: React.FC<IProps> = ({ left, right }) => {
   }, [isResizing, onMouseMove, onMouseUp]);
 
   return (
-    <div className={'two-columns-layout'}>
-      <div ref={leftColumnRef} className={'column'}>
+    <Panel style={{position: 'relative'}}>
+      <Panel style={{
+        backgroundColor: 'var(--color-background-dark)',
+      }} ref={leftColumnRef}>
         {left}
-        <div onMouseDown={onMouseDown} className={'resizer'} />
-      </div>
-      <div className={'column'}>{right}</div>
-    </div>
+      </Panel>
+      <div onMouseDown={onMouseDown} className={'two-columns-resizer'}/>
+      <Panel style={{
+        backgroundColor: 'var(--color-background-dark)',
+      }}>
+        {right}
+      </Panel>
+    </Panel>
   );
 };
 

@@ -1,0 +1,16 @@
+.floating-panel {
+  font-size: var(--font-size-default);
+  border: var(--border);
+  width: fit-content;
+
+  user-select: none;
+  cursor: default;
+
+  &.floating-panel-padding-small {
+    padding: 12px 4px;
+  }
+
+  &.floating-panel-padding-full {
+    padding: 12px;
+  }
+}

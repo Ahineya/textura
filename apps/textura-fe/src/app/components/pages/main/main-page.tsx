@@ -1,13 +1,30 @@
 import React, {FC} from 'react';
-import TwoColumnsLayout from "../../ui/two-columns-layout";
 import './main-page.scss';
 import {Viewer} from "./viewer/viewer";
 import {Editor} from "./editor/editor";
+import {Button, Panel} from "@textura/textura-ui";
+import TwoColumnsLayout from "../../ui/two-columns-layout";
 
 export const MainPage: FC = () => {
   return (
-    <div className="main-page">
+    <Panel direction="column">
+      <Panel
+        direction="row"
+        noFlex
+        alignItems="center"
+        style={{
+          height: '48px',
+          padding: '0 8px',
+          borderBottom: 'var(--border)',
+        }}>
+        <Button padded>
+          New image
+        </Button>
+        <Button padded>
+          Save texture
+        </Button>
+      </Panel>
       <TwoColumnsLayout left={<Viewer/>} right={<Editor/>}/>
-    </div>
+    </Panel>
   );
 }

@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@textura/image-viewer": ["libs/image-viewer/src/index.ts"],
+      "@textura/polygon-drawer": ["libs/polygon-drawer/src/index.ts"],
+      "@textura/textura-ui": ["libs/textura-ui/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

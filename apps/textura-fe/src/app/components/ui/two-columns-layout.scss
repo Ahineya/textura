@@ -11,14 +11,24 @@
     position: relative;
   }
 
-  .resizer {
-    width: 8px;
-    cursor: col-resize;
-    background-color: #ccc;
+
+}
+
+.two-columns-resizer {
+  width: 8px;
+  cursor: col-resize;
+  background-color: var(--color-background-dark);
+  position: relative;
+
+  &:before {
+    content: '';
     position: absolute;
     top: 0;
-    right: 0;
     bottom: 0;
-    z-index: 1;
+    width: 1px;
+    border-left: var(--border);
+    left: 0;
+    right: 0;
+    margin: auto;
   }
 }
