@@ -20,13 +20,43 @@ const fragmentShaderSource = `
 precision mediump float;
 
 uniform sampler2D u_texture;
+uniform float u_scale;
+uniform float u_imageWidth;
+uniform float u_imageHeight;
 
 varying vec2 v_texCoord;
 
 void main() {
-  gl_FragColor = texture2D(u_texture, v_texCoord);
+  vec4 pixelColor = texture2D(u_texture, v_texCoord);
+
+  if (u_scale > 50.0) {
+    vec2 texSize = vec2(u_imageWidth, u_imageHeight);
+    vec2 coord = v_texCoord * texSize;
+    vec2 gridPosition = fract(coord);
+
+    // Calculate line thickness in texture space based on scale and image size
+    float lineThickness = 1.0;
+
+    // Calculate treshold in texture space based on scale and image size
+    float treshold = 1.0 / u_scale * texSize.x / u_imageWidth * 1.1;
+
+    // Check if pixel is on line in x or y direction using treshold
+    bool isOnLineX = gridPosition.x < treshold || gridPosition.x > 1.0 - treshold;
+    bool isOnLineY = gridPosition.y < treshold || gridPosition.y > 1.0 - treshold;
+
+    if (!isOnLineX && !isOnLineY) {
+      gl_FragColor = pixelColor;
+    } else {
+      gl_FragColor = vec4(0.8, 0.8, 0.8, 0.1) * pixelColor;
+    }
+  } else {
+    gl_FragColor = pixelColor;
+  }
 }
 `;
+
+
+
 
 function createTexture(gl: WebGLRenderingContext, image: HTMLImageElement): WebGLTexture {
   const texture = twgl.createTexture(gl, {
@@ -50,6 +80,7 @@ export const ImageViewer: FC<IProps> = ({image, scale = 1, offsetX = 0, offsetY 
 
   const programInfo = useRef<twgl.ProgramInfo>();
   const bufferInfo = useRef<twgl.BufferInfo>();
+  const texture = useRef<WebGLTexture>();
 
   useLayoutEffect(() => {
     if (!image) {
@@ -86,6 +117,10 @@ export const ImageViewer: FC<IProps> = ({image, scale = 1, offsetX = 0, offsetY 
       indices: [0, 1, 2, 2, 1, 3],
     });
 
+    if (image) {
+      texture.current = createTexture(gl, image);
+    }
+
     return () => {
       if (programInfo.current) {
         gl.deleteProgram(programInfo.current.program);
@@ -104,6 +139,11 @@ export const ImageViewer: FC<IProps> = ({image, scale = 1, offsetX = 0, offsetY 
 
       programInfo.current = undefined;
       bufferInfo.current = undefined;
+
+      if (texture.current) {
+        gl.deleteTexture(texture.current);
+        texture.current = undefined;
+      }
     }
   }, [image]);
 
@@ -127,14 +167,22 @@ export const ImageViewer: FC<IProps> = ({image, scale = 1, offsetX = 0, offsetY 
       return;
     }
 
-    const texture = createTexture(gl, image);
+    if (!bufferInfo.current) {
+      return;
+    }
+
+    if (!texture.current) {
+      return;
+    }
+
+    const tex = texture.current;
 
     gl.useProgram(programInfo.current.program);
 
     let animationFrameId: number;
 
     function render() {
-      if (!gl || !programInfo.current || !bufferInfo.current || !texture || !image || !canvas) {
+      if (!gl || !programInfo.current || !bufferInfo.current || !tex || !image || !canvas) {
         return;
       }
 
@@ -160,7 +208,10 @@ export const ImageViewer: FC<IProps> = ({image, scale = 1, offsetX = 0, offsetY 
 
       twgl.setUniforms(programInfo.current, {
         u_matrix: matrix,
-        u_texture: texture,
+        u_texture: tex,
+        u_scale: scale,
+        u_imageWidth: image.width,
+        u_imageHeight: image.height,
       });
 
       twgl.drawBufferInfo(gl, bufferInfo.current);
@@ -171,7 +222,6 @@ export const ImageViewer: FC<IProps> = ({image, scale = 1, offsetX = 0, offsetY 
     animationFrameId = requestAnimationFrame(render);
 
     return () => {
-      gl.deleteTexture(texture);
       cancelAnimationFrame(animationFrameId);
     }
   }, [image, scale, offsetX, offsetY]);
