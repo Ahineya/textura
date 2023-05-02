@@ -1,11 +1,12 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import './editor.scss';
-import {PolygonLayer} from "./polygon-layer/polygon-layer";
 import {uiStateStore} from "../../../../stores/ui-state.store";
 import {useStoreSubscribe} from "../../../../hooks/use-store-subscription.hook";
 import {useKeybinding} from "../../../../hooks/use-keybinding.hook";
+import {EditorController, ImageViewer, PolygonLayer} from "@textura/texture-ripper";
 
 type IProps = {};
+
 
 export const Editor: React.FC<IProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -17,39 +18,6 @@ export const Editor: React.FC<IProps> = () => {
   const offset = useStoreSubscribe(uiStateStore.pan);
 
   const appMode = useStoreSubscribe(uiStateStore.mode);
-
-  const drawImage = useCallback(() => {
-    if (!canvasRef.current || !image) return;
-
-    const ctx = canvasRef.current.getContext('2d');
-    if (!ctx) return;
-
-    ctx.imageSmoothingEnabled = false;
-
-    const canvasWidth = canvasRef.current.clientWidth;
-    const canvasHeight = canvasRef.current.clientHeight;
-    canvasRef.current.width = canvasWidth;
-    canvasRef.current.height = canvasHeight;
-    // ctx.scale(2, 2);
-
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-    ctx.fillStyle = '#F5F5F5';
-
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-    ctx.drawImage(
-      image,
-      offset.x,
-      offset.y,
-      image.width,
-      image.height
-    );
-  }, [image, scale, offset]);
-
-  useEffect(() => {
-    drawImage();
-  }, [drawImage]);
 
   const handleImageSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
@@ -67,7 +35,7 @@ export const Editor: React.FC<IProps> = () => {
     reader.readAsDataURL(file);
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = useCallback((e: React.DragEvent<HTMLLabelElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     if (!file) return;
@@ -84,7 +52,7 @@ export const Editor: React.FC<IProps> = () => {
     reader.readAsDataURL(file);
   }, []);
 
-  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLLabelElement>) => {
     e.preventDefault();
   }, []);
 
@@ -171,25 +139,32 @@ export const Editor: React.FC<IProps> = () => {
         style={{display: 'none'}}
         id="imageSelectorInput"
       />
+
+      <ImageViewer image={image} scale={scale} offsetX={offset.x} offsetY={offset.y}/>
+
       {!imageLoaded && (
         <label htmlFor="imageSelectorInput" className={'drop-zone'} onDrop={handleDrop} onDragOver={handleDragOver}>
           Drop an image or click to select
         </label>
       )}
-      <canvas
-        ref={canvasRef}
-        className={'canvas'}
-        onWheel={handleWheel}
-        onMouseDown={handleMouseDown}
-        style={{
-          zIndex: imageLoaded ? 0 : -1,
-        }}
-      />
+      {/*<canvas*/}
+      {/*  ref={canvasRef}*/}
+      {/*  className={'canvas'}*/}
+      {/*  onWheel={handleWheel}*/}
+      {/*  onMouseDown={handleMouseDown}*/}
+      {/*  style={{*/}
+      {/*    zIndex: imageLoaded ? 0 : -1,*/}
+      {/*  }}*/}
+      {/*/>*/}
       {
-        imageLoaded &&
-        <PolygonLayer width={canvasRef.current?.clientWidth || 0} height={canvasRef.current?.clientHeight || 0}/>
+        imageLoaded && <PolygonLayer/>
+        // <PolygonLayer width={canvasRef.current?.clientWidth || 0} height={canvasRef.current?.clientHeight || 0}/>
       }
 
+      {
+        imageLoaded &&
+        <EditorController/>
+      }
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import ImageViewer from './image-viewer';
+import TextureRipper from './texture-ripper';
 
-describe('ImageViewer', () => {
+describe('TextureRipper', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<ImageViewer />);
+    const { baseElement } = render(<TextureRipper />);
     expect(baseElement).toBeTruthy();
   });
 });

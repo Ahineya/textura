@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import './main-page.scss';
 import {Viewer} from "./viewer/viewer";
 import {Button, Panel, TwoColumnsLayout} from "@textura/textura-ui";
-import {Viewport3d} from "@textura/viewport-3d";
+import {Editor} from "./editor/editor";
 
 export const MainPage: FC = () => {
   return (
@@ -28,7 +28,7 @@ export const MainPage: FC = () => {
           <Viewer/>
         )}
         right={(
-          <Viewport3d/>
+          <Editor/>
         )}/>
     </Panel>
   );
