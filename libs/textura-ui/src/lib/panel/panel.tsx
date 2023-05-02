@@ -10,21 +10,30 @@ export type PanelProps = {
   noFlex?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export const Panel = forwardRef<HTMLDivElement, PanelProps>((props, ref) => {
+export const Panel = forwardRef<HTMLDivElement, PanelProps>((
+  {
+    direction,
+    alignItems,
+    justifyContent,
+    gap,
+    noFlex,
+    ...rest
+  },
+  ref) => {
 
-  const className = classNames('panel', {
-  }, props.className);
+  const className = classNames('panel', {}, rest.className);
 
+  // Filter out props that are not HTML attributes
   return (
-    <div ref={ref} {...props} style={{
-      flexDirection: props.direction,
-      alignItems: props.alignItems,
-      justifyContent: props.justifyContent,
-      flex: props.noFlex ? 'none' : 1,
-      gap: props.gap,
-      ...(props.style || {}),
+    <div ref={ref} {...rest} style={{
+      flexDirection: direction,
+      alignItems: alignItems,
+      justifyContent: justifyContent,
+      flex: noFlex ? 'none' : 1,
+      gap: gap,
+      ...(rest.style || {}),
     }} className={className}>
-      {props.children}
+      {rest.children}
     </div>
   );
 });

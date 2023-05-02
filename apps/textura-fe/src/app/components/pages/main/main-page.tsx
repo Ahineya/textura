@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
 import './main-page.scss';
 import {Viewer} from "./viewer/viewer";
-import {Editor} from "./editor/editor";
 import {Button, Panel, TwoColumnsLayout} from "@textura/textura-ui";
+import {Viewport3d} from "@textura/viewport-3d";
 
 export const MainPage: FC = () => {
   return (
@@ -23,7 +23,13 @@ export const MainPage: FC = () => {
           Save texture
         </Button>
       </Panel>
-      <TwoColumnsLayout left={<Viewer/>} right={<Editor/>}/>
+      <TwoColumnsLayout
+        left={(
+          <Viewer/>
+        )}
+        right={(
+          <Viewport3d/>
+        )}/>
     </Panel>
   );
 }

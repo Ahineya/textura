@@ -6,10 +6,13 @@ export type ButtonProps = {
   padded?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Button: FC<ButtonProps> = (props) => {
+export const Button: FC<ButtonProps> = ({
+  padded,
+  ...props
+                                        }) => {
 
   const className = classNames('button', {
-    'button-padded': props.padded,
+    'button-padded': padded,
   }, props.className);
 
   return (

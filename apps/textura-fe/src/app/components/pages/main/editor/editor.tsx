@@ -30,7 +30,7 @@ export const Editor: React.FC<IProps> = () => {
     const canvasHeight = canvasRef.current.clientHeight;
     canvasRef.current.width = canvasWidth;
     canvasRef.current.height = canvasHeight;
-    ctx.scale(20, 20);
+    // ctx.scale(2, 2);
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 

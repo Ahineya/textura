@@ -17,7 +17,8 @@
     "paths": {
       "@textura/image-viewer": ["libs/image-viewer/src/index.ts"],
       "@textura/polygon-drawer": ["libs/polygon-drawer/src/index.ts"],
-      "@textura/textura-ui": ["libs/textura-ui/src/index.ts"]
+      "@textura/textura-ui": ["libs/textura-ui/src/index.ts"],
+      "@textura/viewport-3d": ["libs/viewport-3d/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
