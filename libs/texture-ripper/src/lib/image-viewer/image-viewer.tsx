@@ -37,12 +37,12 @@ void main() {
     // Calculate line thickness in texture space based on scale and image size
     float lineThickness = 1.0;
 
-    // Calculate treshold in texture space based on scale and image size
-    float treshold = 1.0 / u_scale * texSize.x / u_imageWidth * 1.1;
+    // Calculate threshold in texture space based on scale and image size
+    float threshold = 1.0 / u_scale * texSize.x / u_imageWidth * 1.1;
 
-    // Check if pixel is on line in x or y direction using treshold
-    bool isOnLineX = gridPosition.x < treshold || gridPosition.x > 1.0 - treshold;
-    bool isOnLineY = gridPosition.y < treshold || gridPosition.y > 1.0 - treshold;
+    // Check if pixel is on line in x or y direction using threshold
+    bool isOnLineX = gridPosition.x < threshold || gridPosition.x > 1.0 - threshold;
+    bool isOnLineY = gridPosition.y < threshold || gridPosition.y > 1.0 - threshold;
 
     if (!isOnLineX && !isOnLineY) {
       gl_FragColor = pixelColor;
